@@ -1,9 +1,8 @@
-pragma solidity ^0.5.0;
-import "./../../../libs/ownership/Ownable.sol";
-import "./../../../libs/lifecycle/Pausable.sol";
-import "./../interface/IEthCrossChainData.sol";
+pragma solidity ^0.8.0;
+import "./../../../libs/access/Ownable.sol";
+import "./../../../libs/security/Pausable.sol";
 
-contract EthCrossChainData is IEthCrossChainData, Ownable, Pausable{
+contract EthCrossChainData is Ownable, Pausable{
     /*
      Ethereum cross chain tx hash indexed by the automatically increased index.
      This map exists for the reason that Poly chain can verify the existence of 

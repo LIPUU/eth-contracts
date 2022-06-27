@@ -1,15 +1,14 @@
-pragma solidity ^0.5.0;
+pragma solidity ^0.8.0;
 
 import "./../interface/IEthCrossChainData.sol";
-import "./../interface/IUpgradableECCM.sol";
-import "./../../../libs/lifecycle/Pausable.sol";
-import "./../../../libs/ownership/Ownable.sol";
+import "./../../../libs/security/Pausable.sol";
+import "./../../../libs/access/Ownable.sol";
 
-contract UpgradableECCM is IUpgradableECCM, Ownable, Pausable {
+contract UpgradableECCM is Ownable, Pausable {
     address public EthCrossChainDataAddress;
     uint64 public chainId;  
     
-    constructor (address ethCrossChainDataAddr, uint64 _chainId) Pausable() Ownable()  public {
+    constructor (address ethCrossChainDataAddr, uint64 _chainId) Pausable() Ownable() {
         EthCrossChainDataAddress = ethCrossChainDataAddr;
         chainId = _chainId;
     }

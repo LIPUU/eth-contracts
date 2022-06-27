@@ -1,15 +1,14 @@
-pragma solidity ^0.5.0;
-pragma experimental ABIEncoderV2;
+pragma solidity ^0.8.0;
 
-import "./../../../libs/math/SafeMath.sol";
+import "./../../../libs/utils/SafeMath.sol";
 import "./../../../libs/common/ZeroCopySource.sol";
 import "./../../../libs/common/ZeroCopySink.sol";
 import "./../../../libs/utils/Utils.sol";
 import "./../upgrade/UpgradableECCM.sol";
 import "./../libs/EthCrossChainUtils.sol";
-import "./../interface/IEthCrossChainManager.sol";
 import "./../interface/IEthCrossChainData.sol";
-contract EthCrossChainManager is IEthCrossChainManager, UpgradableECCM {
+
+contract EthCrossChainManager is UpgradableECCM {
     using SafeMath for uint256;
     
     address public whiteLister;
@@ -25,7 +24,7 @@ contract EthCrossChainManager is IEthCrossChainManager, UpgradableECCM {
         uint64 _chainId, 
         address[] memory fromContractWhiteList, 
         bytes[] memory contractMethodWhiteList
-    ) UpgradableECCM(_eccd,_chainId) public {
+    ) UpgradableECCM(_eccd,_chainId) {
         whiteLister = msg.sender;
         for (uint i=0;i<fromContractWhiteList.length;i++) {
             whiteListFromContract[fromContractWhiteList[i]] = true;

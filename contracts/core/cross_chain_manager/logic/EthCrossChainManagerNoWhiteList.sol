@@ -1,14 +1,14 @@
-pragma solidity ^0.5.16;
+pragma solidity ^0.8.0;
 
-import "./../../../libs/math/SafeMath.sol";
+import "./../../../libs/utils/SafeMath.sol";
 import "./../../../libs/common/ZeroCopySource.sol";
 import "./../../../libs/common/ZeroCopySink.sol";
 import "./../../../libs/utils/Utils.sol";
 import "./../upgrade/UpgradableECCM.sol";
 import "./../libs/EthCrossChainUtils.sol";
-import "./../interface/IEthCrossChainManager.sol";
 import "./../interface/IEthCrossChainData.sol";
-contract EthCrossChainManagerNoWhiteList is IEthCrossChainManager, UpgradableECCM {
+
+contract EthCrossChainManagerNoWhiteList is UpgradableECCM {
     using SafeMath for uint256;
 
     event InitGenesisBlockEvent(uint256 height, bytes rawHeader);
@@ -18,7 +18,7 @@ contract EthCrossChainManagerNoWhiteList is IEthCrossChainManager, UpgradableECC
     constructor(
         address _eccd, 
         uint64 _chainId
-    ) UpgradableECCM(_eccd,_chainId) public {}
+    ) UpgradableECCM(_eccd,_chainId) {}
 
     /* @notice              sync Poly chain genesis block header to smart contrat
     *  @dev                 this function can only be called once, nextbookkeeper of rawHeader can't be empty

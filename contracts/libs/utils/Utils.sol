@@ -1,4 +1,4 @@
-pragma solidity ^0.5.0;
+pragma solidity ^0.8.0;
 
 
 library Utils {
@@ -85,7 +85,7 @@ library Utils {
     *  @return          Hashed value in bytes32 format
     */
     function hashLeaf(bytes memory _data) internal pure returns (bytes32 result)  {
-        result = sha256(abi.encodePacked(byte(0x0), _data));
+        result = sha256(abi.encodePacked(bytes1(0x0), _data));
     }
 
     /* @notice          Do hash children as the multi-chain does
@@ -108,7 +108,7 @@ library Utils {
 
         assembly {
             // we know _preBytes_offset is 0
-            let fslot := sload(_preBytes_slot)
+            let fslot := sload(_preBytes.slot)
             // Arrays of 31 bytes or less have an even value in their slot,
             // while longer arrays have an odd value. The actual length is
             // the slot divided by two for odd values, and the lowest order
@@ -145,7 +145,7 @@ library Utils {
                         let cb := 1
 
                         // get the keccak hash to get the contents of the array
-                        mstore(0x0, _preBytes_slot)
+                        mstore(0x0, _preBytes.slot)
                         let sc := keccak256(0x0, 0x20)
 
                         let mc := add(_postBytes, 0x20)
@@ -274,9 +274,9 @@ library Utils {
          require(key.length >= 67, "key lenggh is too short");
          newkey = slice(key, 0, 35);
          if (uint8(key[66]) % 2 == 0){
-             newkey[2] = byte(0x02);
+             newkey[2] = bytes1(0x02);
          } else {
-             newkey[2] = byte(0x03);
+             newkey[2] = bytes1(0x03);
          }
          return newkey;
     }

@@ -1,4 +1,4 @@
-pragma solidity ^0.5.0;
+pragma solidity ^0.8.0;
 
 /**
  * @dev Wrappers over encoding and serialization operation into bytes from bassic types in Solidity for PolyNetwork cross chain utility.
@@ -42,7 +42,7 @@ library ZeroCopySink {
     *  @param b         The byte value
     *  @return          Converted bytes array
     */
-    function WriteByte(byte b) internal pure returns (bytes memory) {
+    function WriteByte(bytes1 b) internal pure returns (bytes memory) {
         return WriteUint8(uint8(b));
     }
 

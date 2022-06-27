@@ -1,11 +1,11 @@
-pragma solidity ^0.5.0;
+pragma solidity ^0.8.0;
 import "./../../../libs/common/ZeroCopySource.sol";
 import "./../../../libs/common/ZeroCopySink.sol";
 import "./../../../libs/utils/Utils.sol";
-import "./../../../libs/math/SafeMath.sol";
+import "./../../../libs/utils/SafeMath.sol";
 library ECCUtils {
     using SafeMath for uint256;
-    
+
     struct Header {
         uint32 version;
         uint64 chainId;
@@ -52,7 +52,7 @@ library ECCUtils {
         bytes32 hash = Utils.hashLeaf(value);
         uint size = _auditPath.length.sub(off).div(33);
         bytes32 nodeHash;
-        byte pos;
+        bytes1 pos;
         for (uint i = 0; i < size; i++) {
             (pos, off) = ZeroCopySource.NextByte(_auditPath, off);
             (nodeHash, off) = ZeroCopySource.NextHash(_auditPath, off);

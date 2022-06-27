@@ -1,13 +1,13 @@
-pragma solidity ^0.5.0;
-import "./../../../libs/ownership/Ownable.sol";
-import "./../../../libs/lifecycle/Pausable.sol";
+pragma solidity ^0.8.0;
+import "./../../../libs/access/Ownable.sol";
+import "./../../../libs/security/Pausable.sol";
 import "./../interface/IUpgradableECCM.sol";
 import "./../interface/IEthCrossChainManagerProxy.sol";
 
-contract EthCrossChainManagerProxy is IEthCrossChainManagerProxy, Ownable, Pausable {
+contract EthCrossChainManagerProxy is Ownable, Pausable {
     address private EthCrossChainManagerAddr_;
     
-    constructor(address _ethCrossChainManagerAddr) public {
+    constructor(address _ethCrossChainManagerAddr) {
         EthCrossChainManagerAddr_ = _ethCrossChainManagerAddr;
     }
     

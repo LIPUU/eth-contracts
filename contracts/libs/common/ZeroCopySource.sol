@@ -1,4 +1,4 @@
-pragma solidity ^0.5.0;
+pragma solidity ^0.8.0;
 
 /**
  * @dev Wrappers over decoding and deserialization operation from bytes into bassic types in Solidity for PolyNetwork cross chain utility.
@@ -23,7 +23,7 @@ library ZeroCopySource {
     function NextBool(bytes memory buff, uint256 offset) internal pure returns(bool, uint256) {
         require(offset + 1 <= buff.length && offset < offset + 1, "Offset exceeds limit");
         // byte === bytes1
-        byte v;
+        bytes1 v;
         assembly{
             v := mload(add(add(buff, 0x20), offset))
         }
@@ -43,9 +43,9 @@ library ZeroCopySource {
     *  @param offset        The position from where we read the byte value
     *  @return              The read byte value and new offset
     */
-    function NextByte(bytes memory buff, uint256 offset) internal pure returns (byte, uint256) {
+    function NextByte(bytes memory buff, uint256 offset) internal pure returns (bytes1, uint256) {
         require(offset + 1 <= buff.length && offset < offset + 1, "NextByte, Offset exceeds maximum");
-        byte v;
+        bytes1 v;
         assembly{
             v := mload(add(add(buff, 0x20), offset))
         }
@@ -264,7 +264,7 @@ library ZeroCopySource {
     }
     
     function NextVarUint(bytes memory buff, uint256 offset) internal pure returns(uint, uint256) {
-        byte v;
+        bytes1 v;
         (v, offset) = NextByte(buff, offset);
 
         uint value;
