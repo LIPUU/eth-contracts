@@ -24,7 +24,11 @@ contract CallerFactoryWithAdmin is ProxyFactory{
         admin = newAdmin;
     }
 
+<<<<<<< HEAD
     function setChildren(address[] memory _addrs, bool flag) public onlyAdmin {
+=======
+    function setChildren(address[] memory _addrs, bool flag) public {
+>>>>>>> poly/2.0
         for (uint i=0; i<_addrs.length; i++) {
             children[_addrs[i]] = flag;
         }
