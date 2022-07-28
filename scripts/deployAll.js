@@ -42,6 +42,7 @@ async function main() {
     const EthCrossChainManager = await hre.ethers.getContractFactory("EthCrossChainManager");
     const WrapperV1 = await hre.ethers.getContractFactory("PolyWrapperV1");
     const WrapperV2 = await hre.ethers.getContractFactory("PolyWrapperV2");
+    const WrapperV3 = await hre.ethers.getContractFactory("PolyWrapperV3");
     let polyId = config.PolyChainID
     let eccd
     let ccmi
@@ -50,6 +51,7 @@ async function main() {
     let lockProxy
     let wrapper1
     let wrapper2
+    let wrapper3
 
     console.log("\nDeploy contracts on chain with Poly_Chain_Id:".cyan, polyId);
     
@@ -194,6 +196,10 @@ async function main() {
     } else {
         console.log("\nWrapperV2 already deployed at".green, config.WrapperV2.blue)
         wrapper2 = await WrapperV2.attach(config.WrapperV2) 
+        if (config.wrapper != wrapper2.address) {
+            config.Wrapper = wrapper2.address
+            writeConfig(config)
+        }
     }
 
     let alreadySetLockProxy2 = await wrapper2.lockProxy();
@@ -209,11 +215,51 @@ async function main() {
         console.log("nsetLockProxy Done".green);
     }
     if (alreadySetFeeCollector2 != "0x0000000000000000000000000000000000000000") {
-        console.log("wrapper1 feeCollector already set".green);
+        console.log("wrapper2 feeCollector already set".green);
     } else {
         // setFeeCollector
         console.log("setFeeCollector ......".cyan);
         tx = await wrapper2.setFeeCollector(deployer.address);
+        await tx.wait();
+        console.log("setFeeCollector Done".green);
+    }
+    
+    if (config.WrapperV3 === undefined) {
+        // deploy WrapperV3
+        console.log("\ndeploy WrapperV3 ......".cyan);
+        wrapper3 = await WrapperV3.deploy(deployer.address, polyId);
+        await wrapper3.deployed();
+        console.log("WrapperV3 deployed to:".green, wrapper3.address.blue);
+        config.WrapperV3 = wrapper3.address
+        config.Wrapper = wrapper3.address
+        writeConfig(config)
+    } else {
+        console.log("\nWrapperV3 already deployed at".green, config.WrapperV3.blue)
+        wrapper3 = await WrapperV3.attach(config.WrapperV3) 
+        if (config.wrapper != wrapper3.address) {
+            config.Wrapper = wrapper3.address
+            writeConfig(config)
+        }
+    }
+
+    let alreadyAddLockProxy3 = await wrapper3.isValidLockProxy(lockProxy.address);
+    let alreadySetFeeCollector3 = await wrapper3.feeCollector();
+    console.log("\nsetup WrapperV3 ......".cyan);
+    if (alreadyAddLockProxy3) {
+        console.log("wrapper3 lockProxy already add".green);
+    } else {
+        // addLockProxy
+        console.log("addLockProxy ......".cyan);
+        tx = await wrapper3.addLockProxy(lockProxy.address);
+        await tx.wait();
+        console.log("addLockProxy Done".green);
+    }
+    if (alreadySetFeeCollector3 != "0x0000000000000000000000000000000000000000") {
+        console.log("wrapper3 feeCollector already set".green);
+    } else {
+        // setFeeCollector
+        console.log("setFeeCollector ......".cyan);
+        tx = await wrapper3.setFeeCollector(deployer.address);
         await tx.wait();
         console.log("setFeeCollector Done".green);
     }
